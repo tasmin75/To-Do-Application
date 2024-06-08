@@ -1,6 +1,6 @@
 import blueLayout from "../assets/signIn-blue.png";
 import logo from "../assets/logo.png";
-import user from "../assets//user.png";
+import user from "../assets/user.png";
 import light from "../assets/chandelier.png";
 import { FcGoogle } from "react-icons/fc";
 import { auth, googleAuthProvider } from "../firebaseConfig";
@@ -15,7 +15,9 @@ const SignIn = () => {
       const result = await signInWithPopup(auth, googleAuthProvider);
       console.log(result);
 
-      localStorage.setItem("token", result.user.accessToken);
+      // Fetch the ID token directly from the user object
+      const token = await result.user.getIdToken();
+      localStorage.setItem("token", token);
       localStorage.setItem("user", JSON.stringify(result.user));
       navigate("/dashboard");
     } catch (error) {
