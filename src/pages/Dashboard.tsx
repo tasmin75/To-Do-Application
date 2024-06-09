@@ -9,6 +9,8 @@ const Dashboard = () => {
     description: "",
   });
 
+  const navigate = useNavigate();
+
   type TodoItem = {
     title: string;
     description: string;
@@ -16,9 +18,14 @@ const Dashboard = () => {
 
   const [data, setData] = useState<TodoItem[]>([]);
 
-  const user = JSON.parse(localStorage.getItem("user") || "");
-  console.log(user);
-  const navigate = useNavigate();
+  const userString = localStorage.getItem("user");
+  const user = userString ? JSON.parse(userString) : null;
+
+  if (!user) {
+    console.error("User data not found in localStorage.");
+    navigate("/signin");
+  }
+
   const handleLogOut = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("user");
